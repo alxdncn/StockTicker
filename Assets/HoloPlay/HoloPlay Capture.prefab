@@ -104,7 +104,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -140,7 +139,6 @@ Camera:
   m_TargetEye: 0
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
@@ -171,20 +169,20 @@ MonoBehaviour:
   overrideViews: []
   renderOverrideBehind: 0
   tiling:
-    presetName: Standard
-    tilesX: 4
-    tilesY: 8
-    quiltW: 2048
-    quiltH: 2048
+    presetName: High Res
+    tilesX: 5
+    tilesY: 9
+    quiltW: 4096
+    quiltH: 4096
     aspect: -1
     overscan: 0
-    numViews: 32
-    tileSizeX: 512
-    tileSizeY: 256
-    paddingX: 0
-    paddingY: 0
-    portionX: 1
-    portionY: 1
+    numViews: 45
+    tileSizeX: 819
+    tileSizeY: 455
+    paddingX: 1
+    paddingY: 1
+    portionX: 0.99975586
+    portionY: 0.99975586
   tilingPresetIndex: 4
   config:
     configVersion: 1.0

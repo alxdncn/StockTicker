@@ -1,17 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class RotateLogo : MonoBehaviour {
 
 	[SerializeField] float speed = 10f;
 
 	Material mat;
-	Texture startTex;
+	Texture2D startTex;
+
+	public Texture2D defaultFailTex;
 
 	void Awake(){
 		mat = GetComponent<Renderer>().material;
-		startTex = mat.mainTexture;
+		startTex = (Texture2D)mat.mainTexture;
+		StartCoroutine(GetDefaultFailTex());
+	}
+
+	IEnumerator GetDefaultFailTex(){
+		defaultFailTex = new Texture2D(2,2);
+		WWW www = new WWW("file://noimage");
+		yield return www;
+		www.LoadImageIntoTexture(defaultFailTex);
 	}
 
 	// Update is called once per frame
@@ -21,7 +32,7 @@ public class RotateLogo : MonoBehaviour {
 
 	public void SetLogoImage(Texture tex){
 		Debug.Log(tex);
-		if(tex == null){
+		if(tex == null || tex == defaultFailTex){
 			mat.mainTexture = startTex;
 			return;
 		}

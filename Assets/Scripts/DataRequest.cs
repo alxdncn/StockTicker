@@ -47,9 +47,10 @@ public class DataRequest : MonoBehaviour {
 	}
 
 	IEnumerator RequestStockData(string stockSymbol, bool isTSX = false){
-		StockInformation stockInfo = null;
 		UnityWebRequest www = new UnityWebRequest(iexApiUrl + stockSymbol + iexRequestQuote);
 		Texture logoToSet = null;
+		string tsxName = "";
+		string tsxCurrency = "USD";
 
 		if(isTSX){
 			//Get the name of the stock
@@ -59,9 +60,16 @@ public class DataRequest : MonoBehaviour {
 			yield return nameWWW.SendWebRequest();
 			if(nameWWW.isNetworkError || nameWWW.isHttpError){
 				Debug.Log(nameWWW.error);
+				ShowNextStock();
 				yield break;
 			} else{
 				Debug.Log(nameWWW.downloadHandler.text);
+				JSONNode matches = JSON.Parse(nameWWW.downloadHandler.text);
+				JSONArray matchesArray = (JSONArray)matches["bestMatches"];
+				JSONNode mainMatch = matchesArray[0];
+				tsxName = mainMatch["2. name"];
+				tsxCurrency = mainMatch["8. currency"];
+				Debug.Log(tsxName);
 			}
 			www.url = (aVApiUrl + aVFunctionKeyword + "&symbol=" + stockSymbol + "&" + aVApiKey);
 		} else{
@@ -82,17 +90,25 @@ public class DataRequest : MonoBehaviour {
 
 		if(www.isNetworkError || www.isHttpError) {
 			Debug.Log(www.error);
+			if(isTSX){		
+				ShowNextStock();
+			} else{
+				StartCoroutine(RequestStockData(stockSymbol, true));
+			}
+			yield break;
 		}
 		else {
 			if(isTSX){
 				Debug.Log(www.downloadHandler.text);
 				JSONNode dataJSON = JSON.Parse(www.downloadHandler.text);
-				// stockInfo.SetData(dataJSON["01."])
+				JSONNode global = dataJSON["Global Quote"];
+				Debug.Log(global);
+				StockInformation stockInfo = new StockInformation(tsxName, global["01. symbol"], global["05. price"], global["02. open"], global["09. change"], global["10. change percent"], tsxCurrency);
+				DataToObject.Instance.MakeStockQuote(stockInfo);
 			} else{
 				Debug.Log(www.downloadHandler.text);
-				stockInfo = JsonUtility.FromJson<StockInformation>(www.downloadHandler.text);
+				StockInformation stockInfo = JsonUtility.FromJson<StockInformation>(www.downloadHandler.text);
 				stockInfo.logo = logoToSet;
-				// DataToObject.Instance.MakeThreeDText(stockInfo.companyName);
 				DataToObject.Instance.MakeStockQuote(stockInfo);
 			}
 		}
@@ -106,11 +122,23 @@ public class DataRequest : MonoBehaviour {
 		public float open;
 		public float change;
 		public float changePercent;
-
+		public string currency = "USD";
 		public Texture logo;
 
-		public void SetData(string companyName, string symbol, float latestPrice, float open, float change, float changePercent){
-			
+		public StockInformation(){
+
+		}
+
+		public StockInformation(string cn, string s, float lp, float o, float c, float cp, string cu){
+			companyName = cn;
+			symbol = s;
+			latestPrice = lp;
+			open = o;
+			change = c;
+			changePercent = cp;
+			currency = cu;
+
+			logo = null;
 		}
 	}
 }

@@ -17,15 +17,19 @@ public class AnimationManager : MonoBehaviour {
 		}
 	}
 
-	[SerializeField] AnimationCurve rotateAnimCurve;
-	[SerializeField] AnimationCurve positionAnimCurve;
+	[SerializeField] AnimationCurve[] rotateAnimCurve;
+	[SerializeField] AnimationCurve[] positionAnimCurve;
 
-	[SerializeField] Vector3 startPos;
-	[SerializeField] Vector3 endPos;
-	[SerializeField] Vector3 startEulers;
-	[SerializeField] Vector3 endEulers;
+	[SerializeField] Vector3[] startPos;
+	[SerializeField] Vector3[] endPos;
+	[SerializeField] Vector3[] startEulers;
+	[SerializeField] Vector3[] endEulers;
 
-	[SerializeField] float animTime = 5f;
+	[SerializeField] float[] animTimes;
+
+	public float endXPos = 70;
+
+	int animationIndex = 0;
 	float animTimer = 0f;
 
 	Transform objectToAnimate;
@@ -38,16 +42,21 @@ public class AnimationManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(objectToAnimate != null){
-			if(animTimer > animTime){
-				DataRequest.Instance.ShowNextStock();
-				Destroy(objectToAnimate.gameObject);
-				objectToAnimate = null;
+			if(animTimer > animTimes[animationIndex]){
+				animationIndex++;
+				animTimer = 0f;
+				if(animationIndex >= animTimes.Length){
+					animationIndex = 0;
+					DataRequest.Instance.ShowNextStock();
+					Destroy(objectToAnimate.gameObject);
+					objectToAnimate = null;
+				}
 				return;
 			}
-			float tPos = positionAnimCurve.Evaluate(animTimer/animTime);
-			float tRot = rotateAnimCurve.Evaluate(animTimer/animTime);
-			objectToAnimate.position = Vector3.Lerp(startPos, endPos, tPos);
-			objectToAnimate.rotation = Quaternion.Euler(Vector3.Lerp(startEulers, endEulers, tRot));
+			float tPos = positionAnimCurve[animationIndex].Evaluate(animTimer/animTimes[animationIndex]);
+			float tRot = rotateAnimCurve[animationIndex].Evaluate(animTimer/animTimes[animationIndex]);
+			objectToAnimate.position = Vector3.Lerp(startPos[animationIndex], endPos[animationIndex], tPos);
+			objectToAnimate.rotation = Quaternion.Euler(Vector3.Lerp(startEulers[animationIndex], endEulers[animationIndex], tRot));
 			animTimer += Time.deltaTime;
 		}
 	}
@@ -55,6 +64,7 @@ public class AnimationManager : MonoBehaviour {
 	public void StartAnimation(Transform trans){
 		animTimer = 0f;
 		objectToAnimate = trans;
+		endPos[endPos.Length - 1].x = endXPos;
 		// startPos = objectToAnimate.position;
 	}
 
