@@ -46,24 +46,35 @@ public class DataToObject : MonoBehaviour {
 	}
 
 	public void MakeStockQuote(DataRequest.StockInformation info){
-		logoScript.SetLogoImage(info.logo);
+		try{
+			logoScript.SetLogoImage(info.logo);
 
-		GameObject holder = new GameObject(info.symbol + " Holder");
-		// holder.transform.position = new Vector3(5.0f, 0, 0);
+			float changePer = info.changePercent * 100.0f;
+			float changePrice = info.change;
+			float closePrice = info.previousClose;
 
-		MakeThreeDText(info.companyName, ySpacing, .6f, mainColor, true).transform.parent = holder.transform;
-		MakeThreeDText(info.symbol, 0, 0.4f, mainColor).transform.parent = holder.transform;
-		MakeThreeDText(info.latestPrice.ToString("F2") + " " + info.currency, -ySpacing, 0.4f, mainColor).transform.parent = holder.transform;
-		
-		float changePercent = info.changePercent * 100.0f;
-		Color changeCol = positiveColor;
-		if(Mathf.Sign(changePercent) < 0){
-			changeCol = negativeColor;
+			if(changePer == 0 && changePrice != 0){
+				changePer = (changePrice / closePrice) * 100.0f;
+			}
+
+			GameObject holder = new GameObject(info.symbol + " Holder");
+			// holder.transform.position = new Vector3(5.0f, 0, 0);
+
+			MakeThreeDText(info.companyName, ySpacing, .6f, mainColor, true).transform.parent = holder.transform;
+			MakeThreeDText(info.symbol, 0, 0.4f, mainColor).transform.parent = holder.transform;
+			MakeThreeDText(info.latestPrice.ToString("F2") + " " + info.currency, -ySpacing, 0.4f, mainColor).transform.parent = holder.transform;
+			
+			Color changeCol = positiveColor;
+			if(Mathf.Sign(changePer) < 0){
+				changeCol = negativeColor;
+			}
+
+			MakeThreeDText(changePrice.ToString("F2") + " (" + changePer.ToString("F3") + "%)", -ySpacing * 2, 0.4f, changeCol).transform.parent = holder.transform;
+			
+			AnimationManager.Instance.StartAnimation(holder.transform);
+		} catch{
+			DataRequest.Instance.ShowNextStock();
 		}
-
-		MakeThreeDText(info.change.ToString("F2") + " (" + changePercent.ToString() + "%)", -ySpacing * 2, 0.4f, changeCol).transform.parent = holder.transform;
-		
-		AnimationManager.Instance.StartAnimation(holder.transform);
 	}
 
 	GameObject MakeThreeDText(string word, float yPos, float parentScale, Color col, bool largest = false){
@@ -96,7 +107,7 @@ public class DataToObject : MonoBehaviour {
 
 			if(smallCharacter)
 				spacing -= xSpacingSmallSubtract;
-			else if(currentCharacter == 'm')
+			else if(currentCharacter == 'm' || currentCharacter == 'w')
 				spacing += xSpacingMAdd;
 
 			newObj.transform.position = new Vector3(spacing, 0, 0);

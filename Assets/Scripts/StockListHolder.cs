@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class StockListHolder {
 	public static string[] symbolsUS = {
-		
 		"AA",
 		"AAPL",
 		"ABT",

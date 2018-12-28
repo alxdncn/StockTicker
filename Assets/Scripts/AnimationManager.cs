@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloPlay;
 
 public class AnimationManager : MonoBehaviour {
 
@@ -34,8 +35,13 @@ public class AnimationManager : MonoBehaviour {
 
 	Transform objectToAnimate;
 
+	int pauseIndex = 1;
+	bool goToNext = true;
+	float goToNextRegularTime;
+
 	// Use this for initialization
 	void Start () {
+		goToNextRegularTime = animTimes[pauseIndex];
 		DataRequest.Instance.ShowNextStock();
 	}
 	
@@ -44,6 +50,12 @@ public class AnimationManager : MonoBehaviour {
 		if(objectToAnimate != null){
 			if(animTimer > animTimes[animationIndex]){
 				animationIndex++;
+				// if(animationIndex == pauseIndex + 1){
+				// 	if(goToNext)
+				// 		animTimes[pauseIndex] = goToNextRegularTime;
+				// 	else
+				// 		animTimes[pauseIndex] = Mathf.Infinity;
+				// }
 				animTimer = 0f;
 				if(animationIndex >= animTimes.Length){
 					animationIndex = 0;
@@ -58,6 +70,31 @@ public class AnimationManager : MonoBehaviour {
 			objectToAnimate.position = Vector3.Lerp(startPos[animationIndex], endPos[animationIndex], tPos);
 			objectToAnimate.rotation = Quaternion.Euler(Vector3.Lerp(startEulers[animationIndex], endEulers[animationIndex], tRot));
 			animTimer += Time.deltaTime;
+		}
+
+		if(Buttons.GetButtonDown(ButtonType.SQUARE) || Buttons.GetButtonDown(ButtonType.CIRCLE)){
+			goToNext = !goToNext;
+			if(!goToNext){
+				animTimes[pauseIndex] = Mathf.Infinity;
+			} else{
+				animTimes[pauseIndex] = goToNextRegularTime;
+			}
+		}
+		if(Buttons.GetButtonDown(ButtonType.LEFT)){
+			if(animationIndex == pauseIndex){
+				DataRequest.Instance.stockIndex -= 2;
+				if(DataRequest.Instance.stockIndex < 0){
+					DataRequest.Instance.stockIndex = StockListHolder.symbolsUS.Length - 2;
+				}
+				animationIndex ++;
+				animTimer = 0f;
+			}
+		}
+		if(Buttons.GetButtonDown(ButtonType.RIGHT)){
+			if(animationIndex == pauseIndex){
+				animationIndex ++;
+				animTimer = 0f;
+			}
 		}
 	}
 

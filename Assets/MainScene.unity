@@ -113,7 +113,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!84 &418671207
+--- !u!84 &385067115
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -151,12 +151,12 @@ Prefab:
         type: 2}
       propertyPath: lenticularMat
       value: 
-      objectReference: {fileID: 814936386}
+      objectReference: {fileID: 977476716}
     - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
         type: 2}
       propertyPath: quiltRT
       value: 
-      objectReference: {fileID: 418671207}
+      objectReference: {fileID: 385067115}
     - target: {fileID: 4418173991791834, guid: 63c6926d7134aed4d8d05db7455063c5, type: 2}
       propertyPath: m_RootOrder
       value: 2
@@ -224,54 +224,35 @@ Prefab:
     - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
         type: 2}
       propertyPath: config.serial
-      value: 00545
+      value: 00000
       objectReference: {fileID: 0}
     - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
         type: 2}
       propertyPath: config.pitch.value
-      value: 49.82978
+      value: 49.91
       objectReference: {fileID: 0}
     - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
         type: 2}
       propertyPath: config.slope.value
-      value: 5.176087
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
         type: 2}
       propertyPath: config.center.value
-      value: 0.0513587
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4153913709431786, guid: 63c6926d7134aed4d8d05db7455063c5, type: 2}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114329103378511520, guid: 63c6926d7134aed4d8d05db7455063c5,
+        type: 2}
+      propertyPath: config.invView.value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63c6926d7134aed4d8d05db7455063c5, type: 2}
   m_IsPrefabParent: 0
---- !u!21 &814936386
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: HoloPlay/Lenticular
-  m_Shader: {fileID: 4800000, guid: 429fb4e5e466f5d419aa7c8e90e61e45, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors: []
 --- !u!1001 &859449263
 Prefab:
   m_ObjectHideFlags: 0
@@ -318,6 +299,30 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2f7fe1e2956074bb08a2bea52aae5260, type: 2}
   m_IsPrefabParent: 0
+--- !u!21 &977476716
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: HoloPlay/Lenticular
+  m_Shader: {fileID: 4800000, guid: 429fb4e5e466f5d419aa7c8e90e61e45, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &1167270374
 Prefab:
   m_ObjectHideFlags: 0
@@ -410,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d2683176f2a846e2a5fb3db8ff6ae09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stockIndex: 0
 --- !u!4 &1557532543
 Transform:
   m_ObjectHideFlags: 0
@@ -439,7 +445,7 @@ MonoBehaviour:
   xSpacingMAdd: -0.3
   ySpacing: 2
   letterMat: {fileID: 2100000, guid: 845c2678ce10ba04ebdd8e57f9c3b07d, type: 2}
-  mainColor: {r: 0.63235295, g: 0.63235295, b: 0.63235295, a: 1}
+  mainColor: {r: 0.43144464, g: 0.6452095, b: 0.77205884, a: 1}
   negativeColor: {r: 1, g: 0, b: 0, a: 1}
   positiveColor: {r: 0, g: 1, b: 0, a: 1}
   alphabet: 6100620063006400650066006700680069006a006b006c006d006e006f0070007100720073007400750076007700780079007a00200030003100320033003400350036003700380039002e003a002d00280029002500
@@ -622,7 +628,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   animTimes:
   - 2
-  - 5
+  - 8
   - 3
   endXPos: 70
 --- !u!1 &1637833842 stripped
@@ -793,3 +799,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: -20
+  defaultFailTex: {fileID: 0}
