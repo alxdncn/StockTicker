@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using HoloPlay;
+using LookingGlass;
 
 public class AnimationManager : MonoBehaviour {
 
@@ -72,7 +72,7 @@ public class AnimationManager : MonoBehaviour {
 			animTimer += Time.deltaTime;
 		}
 
-		if(Buttons.GetButtonDown(ButtonType.SQUARE) || Buttons.GetButtonDown(ButtonType.CIRCLE)){
+		if(ButtonManager.GetButtonDown(ButtonType.SQUARE) || ButtonManager.GetButtonDown(ButtonType.CIRCLE)){
 			goToNext = !goToNext;
 			if(!goToNext){
 				animTimes[pauseIndex] = Mathf.Infinity;
@@ -80,7 +80,7 @@ public class AnimationManager : MonoBehaviour {
 				animTimes[pauseIndex] = goToNextRegularTime;
 			}
 		}
-		if(Buttons.GetButtonDown(ButtonType.LEFT)){
+		if(ButtonManager.GetButtonDown(ButtonType.LEFT)){
 			if(animationIndex == pauseIndex){
 				DataRequest.Instance.stockIndex -= 2;
 				if(DataRequest.Instance.stockIndex < 0){
@@ -90,7 +90,7 @@ public class AnimationManager : MonoBehaviour {
 				animTimer = 0f;
 			}
 		}
-		if(Buttons.GetButtonDown(ButtonType.RIGHT)){
+		if(ButtonManager.GetButtonDown(ButtonType.RIGHT)){
 			if(animationIndex == pauseIndex){
 				animationIndex ++;
 				animTimer = 0f;
